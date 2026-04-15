@@ -40,7 +40,10 @@ from matplotlib.ticker import FormatStrFormatter
 from scipy import signal
 from tabulate import tabulate
 
-pd.options.mode.chained_assignment = None
+try:
+    pd.options.mode.chained_assignment = None
+except Exception:
+    pass  # Removed in pandas 2.2+
 np.seterr(divide='ignore', invalid='ignore')
 warnings.simplefilter(action='ignore', category=FutureWarning)
 logging.getLogger('tvDatafeed').setLevel(logging.CRITICAL)
