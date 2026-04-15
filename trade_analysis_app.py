@@ -1,57 +1,67 @@
 """
 trade_analysis_app.py
 Streamlit version of Trade Analysis notebook.
-
-HOW TO RUN (use the launcher to set upload limit):
-    python run_app.py
-
-Or manually:
-    1. python -c "import pathlib; d=pathlib.Path.home()/'.streamlit'; d.mkdir(exist_ok=True); (d/'config.toml').write_text('[server]\nmaxUploadSize = 2048\nmaxMessageSize = 2048\n')"
-    2. streamlit run trade_analysis_app.py
-
-Notes:
-- finplot requires a Qt display and cannot run in Streamlit (headless).
-  Cell 4 (interactive finplot chart) is omitted from this app.
-- All Cell 3 matplotlib charts ARE displayed inline.
-- Excel output is produced and offered as a download.
-- Tick CSV files and Raw Report xlsx can be uploaded directly or inside a .zip.
 """
 
-import io
-import os
-import tempfile
-import zipfile
-import warnings
-import datetime
-import enum
-import json
-import logging
-import random
-import re
-import string
-
-import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 import streamlit as st
-import yfinance as yf
-from matplotlib.ticker import FormatStrFormatter
-from scipy import signal
-from tabulate import tabulate
 
 try:
-    pd.options.mode.chained_assignment = None
-except Exception:
-    pass  # Removed in pandas 2.2+
-np.seterr(divide='ignore', invalid='ignore')
-warnings.simplefilter(action='ignore', category=FutureWarning)
-logging.getLogger('tvDatafeed').setLevel(logging.CRITICAL)
+    _startup_ok = True
+    _startup_err = None
 
-import requests
-from websocket import create_connection
+    import io
+    import os
+    import tempfile
+    import zipfile
+    import warnings
+    import datetime
+    import enum
+    import json
+    import logging
+    import random
+    import re
+    import string
 
-logger = logging.getLogger(__name__)
+    import matplotlib.dates as mdates
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
+
+    try:
+        import yfinance as yf
+    except Exception:
+        yf = None
+
+    from matplotlib.ticker import FormatStrFormatter
+    from scipy import signal
+    from tabulate import tabulate
+
+    try:
+        pd.options.mode.chained_assignment = None
+    except Exception:
+        pass
+
+    np.seterr(divide='ignore', invalid='ignore')
+    warnings.simplefilter(action='ignore', category=FutureWarning)
+    logging.getLogger('tvDatafeed').setLevel(logging.CRITICAL)
+
+    import requests
+    try:
+        from websocket import create_connection
+    except Exception:
+        create_connection = None
+
+    logger = logging.getLogger(__name__)
+
+except Exception as e:
+    _startup_ok = False
+    _startup_err = e
+
+if not _startup_ok:
+    st.error(f"App failed to start: {_startup_err}")
+    import traceback
+    st.code(traceback.format_exc())
+    st.stop()
 
 
 # =============================================================================
