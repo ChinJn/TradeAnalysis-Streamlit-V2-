@@ -1,24 +1,13 @@
-# ── core data ─────────────────────────────────────────────────────────────────
-pandas
-numpy
-
-# ── Excel I/O ─────────────────────────────────────────────────────────────────
-openpyxl
-xlsxwriter
-
-# ── market data ───────────────────────────────────────────────────────────────
-yfinance
-websocket-client
-requests
-
-# ── plotting ──────────────────────────────────────────────────────────────────
-matplotlib
-
-# ── scientific / signal processing ────────────────────────────────────────────
-scipy
-
-# ── table formatting ──────────────────────────────────────────────────────────
-tabulate
-
-# ── Streamlit ─────────────────────────────────────────────────────────────────
-streamlit
+# Pinned to versions compatible with Python 3.11 and the app code
+pandas>=2.0,<2.3
+numpy>=1.24,<2.0
+openpyxl>=3.1,<3.2
+xlsxwriter>=3.1,<3.3
+yfinance>=0.2.36,<0.3
+websocket-client>=1.6,<2.0
+requests>=2.31
+matplotlib>=3.7,<3.10
+scipy>=1.11,<1.14
+tabulate>=0.9
+streamlit>=1.35,<1.57
+ 
